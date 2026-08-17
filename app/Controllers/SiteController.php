@@ -126,10 +126,14 @@ final class SiteController
                 'ip_hash' => hash('sha256', $request->ip() . '|' . (string) env('APP_KEY', 'local')),
                 'user_agent' => $request->userAgent(),
             ]);
+            $data['contact_id'] = (int) Database::connection()->lastInsertId();
+            $data['locale'] = locale();
+            $mailer = new Mailer();
             try {
-                (new Mailer())->sendContactNotification($data);
+                $mailer->sendContactNotification($data);
             } catch (Throwable $mailerException) {
-                Logger::exception('SMTP_NOTIFICATION_FAILED', $mailerException, [
+                Logger::exception('CONTACT_NOTIFICATION_EMAIL_FAILED', $mailerException, [
+                    'contact_message_id' => $data['contact_id'],
                     'locale' => locale(),
                     'request_type' => $data['request_type'],
                     'service' => $data['service'],

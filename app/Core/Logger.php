@@ -175,11 +175,11 @@ final class Logger
                 'timestamp' => date(DATE_ATOM),
                 'level' => $level,
                 'event' => $event,
-                'message' => self::cleanString($message, 8000),
+                'message' => self::redactText(self::cleanString($message, 8000)),
                 'request_id' => self::$requestId,
                 'request' => self::requestContext(),
                 'source' => $file !== null ? ['file' => $file, 'line' => $line] : null,
-                'exception' => $exception,
+                'exception' => self::redact($exception),
                 'context' => self::redact($context),
                 'runtime' => [
                     'php' => PHP_VERSION,
@@ -253,7 +253,7 @@ final class Logger
             return $safe;
         }
         if (is_string($value)) {
-            return self::cleanString($value, 4000);
+            return self::redactText(self::cleanString($value, 4000));
         }
         if (is_object($value)) {
             return '[OBJECT ' . $value::class . ']';
@@ -307,6 +307,16 @@ final class Logger
     {
         $value = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $value) ?? '';
         return mb_strlen($value) > $limit ? mb_substr($value, 0, $limit) . '…' : $value;
+    }
+
+    private static function redactText(string $value): string
+    {
+        $patterns = [
+            '/\b(Bearer)\s+[A-Za-z0-9._~+\/=:-]+/i' => '$1 [REDACTED]',
+            '/((?:pass(?:word)?|token|secret|authorization|cookie|session|csrf|api[_-]?key)\s*(?:=|:|=>)\s*)(?:"[^"]*"|\'[^\']*\'|[^\s,;&]+)/i' => '$1[REDACTED]',
+            '/([?&](?:pass(?:word)?|token|secret|authorization|cookie|session|csrf|api[_-]?key)=)[^&\s]*/i' => '$1[REDACTED]',
+        ];
+        return (string) preg_replace(array_keys($patterns), array_values($patterns), $value);
     }
 
     private static function makeRequestId(): string

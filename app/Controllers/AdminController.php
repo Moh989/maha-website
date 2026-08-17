@@ -13,6 +13,7 @@ use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
 use App\Core\View;
+use App\Services\ErrorLogReader;
 use PDO;
 use Throwable;
 
@@ -148,6 +149,24 @@ final class AdminController
         View::render('admin/dashboard', $this->shared([
             'pageTitle' => 'نظرة عامة', 'counts' => $counts, 'recent' => $recent,
         ]), 'layouts/admin');
+    }
+
+    public function errorLogs(Request $request): void
+    {
+        Auth::requireRole('administrator');
+
+        $query = mb_substr(trim((string) $request->input('q', '')), 0, 200);
+        $level = trim((string) $request->input('level', ''));
+        $source = trim((string) $request->input('source', ''));
+        $page = max(1, (int) $request->input('page', 1));
+        $result = (new ErrorLogReader())->search($query, $level, $source, $page);
+
+        View::render('admin/error-logs', $this->shared(array_merge($result, [
+            'pageTitle' => 'سجل الأخطاء',
+            'q' => $query,
+            'level' => $level,
+            'source' => $source,
+        ])), 'layouts/admin');
     }
 
     public function index(Request $request, string $resource): void

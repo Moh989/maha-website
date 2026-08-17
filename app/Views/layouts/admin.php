@@ -25,6 +25,9 @@ $adminStylesheetVersion = (string) (@filemtime(base_path('public' . $adminStyles
         ?>
             <a class="<?= $active ? 'active' : '' ?>" href="<?= e(url('/admin/' . $slug)) ?>"><span><?= e($icons[$slug] ?? '•') ?></span><?= e($definition['label']) ?></a>
         <?php endforeach; ?>
+        <?php if (($user['role_slug'] ?? '') === 'administrator'): ?>
+            <a class="<?= str_starts_with($adminPath, '/admin/error-logs') ? 'active' : '' ?>" href="<?= e(url('/admin/error-logs')) ?>"><span>!</span>سجل الأخطاء</a>
+        <?php endif; ?>
     </nav>
     <div class="admin-sidebar-bottom"><a href="<?= e(url('/')) ?>" target="_blank" rel="noopener">عرض الموقع ↗</a><form method="post" action="<?= e(url('/admin/logout')) ?>"><?= csrf_field() ?><button type="submit">تسجيل الخروج</button></form></div>
 </aside>

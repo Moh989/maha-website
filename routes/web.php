@@ -21,6 +21,7 @@ $router->get('/admin/login', [AuthController::class, 'showLogin']);
 $router->post('/admin/login', [AuthController::class, 'login']);
 $router->post('/admin/logout', [AuthController::class, 'logout']);
 $router->get('/admin', [AdminController::class, 'dashboard']);
+$router->get('/admin/error-logs', [AdminController::class, 'errorLogs']);
 $router->get('/admin/media/file/{id}', [MediaController::class, 'serve']);
 $router->post('/admin/media/upload', [MediaController::class, 'upload']);
 $router->get('/admin/{resource}', [AdminController::class, 'index']);
