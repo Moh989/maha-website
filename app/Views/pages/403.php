@@ -1,0 +1,1 @@
+<section class="error-page"><div class="error-code">403</div><div><p class="eyebrow dark"><span></span><?= e(__('forbidden')) ?></p><h1><?= locale() === 'ar' ? 'ليست لديك صلاحية الوصول إلى هذا المحتوى.' : 'You do not have permission to access this content.' ?></h1><a class="button primary" href="<?= e(localized_url('/')) ?>"><?= e(__('back_home')) ?></a></div></section>

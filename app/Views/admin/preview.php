@@ -1,0 +1,2 @@
+<header class="preview-bar"><strong>معاينة غير منشورة — <?= e($resourceConfig['label']) ?></strong><button type="button" onclick="window.close()">إغلاق</button></header>
+<main class="preview-content"><p class="preview-kicker">العربية</p><h1><?= e($item[$resourceConfig['title']] ?? '') ?></h1><?php foreach ($resourceConfig['fields'] as $name => $field): if (!in_array($field['type'], ['textarea', 'textarea-rich', 'readonly-textarea'], true)) continue; ?><section><h2><?= e($field['label']) ?></h2><p><?= nl2br(e($item[$name] ?? '')) ?></p></section><?php endforeach; ?></main>

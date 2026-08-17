@@ -1,0 +1,10 @@
+/.env
+/storage/logs/*.log
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+/tmp/
+/production/
+/public/assets/docs/almaha-company-profile-2026.pdf
+.DS_Store

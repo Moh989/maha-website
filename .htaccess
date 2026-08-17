@@ -1,0 +1,8 @@
+Options -Indexes
+RewriteEngine On
+
+RewriteRule ^(?:app|bin|config|database|routes|screenshots|storage|tests|tools|tmp)(?:/|$) - [F,L,NC]
+RewriteRule ^(?:\.env|CONTENT-GAPS\.md|CONTENT-SOURCE-MAP\.md|IMAGE-SOURCES\.md|PROJECT-BRIEF\.md|QA-REPORT\.md|README\.md)$ - [F,L,NC]
+
+RewriteRule ^public(?:/|$) - [L,NC]
+RewriteRule ^(.*)$ public/$1 [L]
