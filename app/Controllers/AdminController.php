@@ -8,6 +8,7 @@ use App\Core\Activity;
 use App\Core\Auth;
 use App\Core\Csrf;
 use App\Core\Database;
+use App\Core\Logger;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
@@ -213,7 +214,9 @@ final class AdminController
             Activity::log('create', $resource, $id, ['title' => $data[$config['title']] ?? '']);
             Session::flash('success', 'تمت الإضافة بنجاح.');
         } catch (Throwable $exception) {
-            error_log('Admin create failed: ' . $exception->getMessage());
+            Logger::exception('ADMIN_CREATE_FAILED', $exception, [
+                'resource' => $resource,
+            ]);
             Session::flash('error', 'تعذر الحفظ. تحقق من أن الرابط أو البريد غير مستخدم مسبقاً.');
         }
         Response::redirect('/admin/' . $resource);
@@ -252,7 +255,10 @@ final class AdminController
             Activity::log('update', $resource, (int) $id, ['title' => $data[$config['title']] ?? '']);
             Session::flash('success', 'تم حفظ التعديلات.');
         } catch (Throwable $exception) {
-            error_log('Admin update failed: ' . $exception->getMessage());
+            Logger::exception('ADMIN_UPDATE_FAILED', $exception, [
+                'resource' => $resource,
+                'entity_id' => (int) $id,
+            ]);
             Session::flash('error', 'تعذر حفظ التعديلات.');
         }
         Response::redirect('/admin/' . $resource);

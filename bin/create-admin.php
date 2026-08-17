@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Core\Database;
 use App\Core\Env;
+use App\Core\Logger;
 
 spl_autoload_register(static function (string $class): void {
     $prefix = 'App\\';
@@ -13,6 +14,8 @@ spl_autoload_register(static function (string $class): void {
 });
 require dirname(__DIR__) . '/app/helpers.php';
 Env::load(dirname(__DIR__) . '/.env');
+date_default_timezone_set((string) env('APP_TIMEZONE', 'Asia/Baghdad'));
+Logger::boot(dirname(__DIR__) . '/storage/logs/error_log', (bool) env('APP_DEBUG', false));
 
 if (PHP_SAPI !== 'cli') {
     fwrite(STDERR, "CLI only.\n");

@@ -8,6 +8,7 @@ use App\Core\Activity;
 use App\Core\Auth;
 use App\Core\Csrf;
 use App\Core\Database;
+use App\Core\Logger;
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
@@ -43,7 +44,11 @@ final class MediaController
                     unlink($orphan);
                 }
             }
-            error_log('Upload error: ' . $exception->getMessage());
+            Logger::exception('MEDIA_UPLOAD_FAILED', $exception, [
+                'original_name' => basename((string) ($_FILES['file']['name'] ?? '')),
+                'upload_error' => (int) ($_FILES['file']['error'] ?? UPLOAD_ERR_NO_FILE),
+                'size' => (int) ($_FILES['file']['size'] ?? 0),
+            ]);
             Session::flash('error', $exception->getMessage());
         }
         Response::redirect('/admin/media');

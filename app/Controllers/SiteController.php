@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Core\Csrf;
 use App\Core\Database;
+use App\Core\Logger;
 use App\Core\RateLimiter;
 use App\Core\Request;
 use App\Core\Response;
@@ -128,11 +129,19 @@ final class SiteController
             try {
                 (new Mailer())->sendContactNotification($data);
             } catch (Throwable $mailerException) {
-                error_log('SMTP notification failed: ' . $mailerException->getMessage());
+                Logger::exception('SMTP_NOTIFICATION_FAILED', $mailerException, [
+                    'locale' => locale(),
+                    'request_type' => $data['request_type'],
+                    'service' => $data['service'],
+                ]);
             }
             Session::flash('success', __('contact_success'));
         } catch (Throwable $exception) {
-            error_log('Contact submission failed: ' . $exception->getMessage());
+            Logger::exception('CONTACT_SUBMISSION_FAILED', $exception, [
+                'locale' => locale(),
+                'request_type' => $data['request_type'],
+                'service' => $data['service'],
+            ]);
             Session::flash('errors', ['form' => __('contact_failed')]);
             Session::flash('old', $data);
         }

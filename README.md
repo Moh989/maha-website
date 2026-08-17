@@ -17,7 +17,7 @@
 - `database/schema.sql`: بنية قاعدة البيانات.
 - `database/seed.sql`: المحتوى الرسمي الأولي من الملف التعريفي، بلا مستخدم أو كلمة مرور.
 - `storage/uploads/`: ملفات لوحة التحكم، خارج المجلد العام.
-- `storage/logs/`: سجل أخطاء PHP الداخلي.
+- `storage/logs/error_log`: سجل مركزي بصيغة JSONL لأخطاء PHP والاستثناءات والأخطاء القاتلة وحالات HTTP 4xx/5xx.
 - `bin/create-admin.php`: إنشاء أول مدير من الطرفية.
 - `CONTENT-GAPS.md`: البيانات التي لم ترد في الملف الرسمي.
 - `CONTENT-SOURCE-MAP.md`: خريطة النصوص إلى صفحات المصدر.
@@ -90,7 +90,7 @@
 3. أنشئ `.env` في `/home/ACCOUNT/almaha/.env`، لا داخل `public`.
 4. استورد `schema.sql` ثم `seed.sql` من phpMyAdmin أو Terminal.
 5. أنشئ المدير من cPanel Terminal.
-6. اضبط ملكية وصلاحيات `storage/logs` و`storage/uploads` و`storage/cache` ليتمكن PHP من الكتابة فيها.
+6. اضبط ملكية وصلاحيات `storage/logs` و`storage/uploads` و`storage/cache` ليتمكن PHP من الكتابة فيها. ينشئ النظام `storage/logs/error_log` بصلاحية `0640` تلقائياً.
 
 ### إذا تعذر تغيير Document Root
 
@@ -112,7 +112,24 @@
 3. فعّل إعادة توجيه HTTP إلى HTTPS من cPanel أو أضفها على مستوى الاستضافة.
 4. اترك `APP_DEBUG=false` وتأكد أن `display_errors=Off` و`expose_php=Off` في إعداد PHP الإنتاجي.
 5. احتفظ بنسخ احتياطية دورية من قاعدة البيانات و`storage/uploads` و`.env` في مكان مشفر.
-6. راقب `storage/logs/php-error.log`، ولا تجعله قابلاً للوصول من الويب.
+6. راقب `storage/logs/error_log` من File Manager أو SSH. كل سطر سجل JSON مستقل ويحتوي `request_id` ومستوى الخطأ والحدث والمسار والمصدر والتتبع. المجلد محمي من الويب.
+
+## سجل الأخطاء الدقيق
+
+- الملف النشط: `storage/logs/error_log`.
+- الملف الاحتياطي الخام لأخطاء محرك PHP قبل اكتمال تشغيل التطبيق: `storage/logs/php-native.log`.
+- يسجل تحذيرات PHP والإشعارات وDeprecated والاستثناءات غير المعالجة والأخطاء القاتلة وحالات HTTP من 400 فما فوق.
+- يضيف `X-Request-ID` لكل استجابة، ويظهر الرقم نفسه داخل سجل الخطأ لتسهيل التتبع.
+- يحفظ مسار الملف ورقم السطر وStack Trace ونوع الاستثناء ونسخة PHP ومدة الطلب والذاكرة القصوى.
+- لا يحفظ محتوى POST أو Cookies، ويحجب مفاتيح كلمات المرور وTokens وCSRF وAuthorization آلياً.
+- يدور السجل تلقائياً عند بلوغ `LOG_MAX_MB` ويحتفظ بعدد `LOG_MAX_FILES` من النسخ.
+- القيم الافتراضية موثقة في `.env.example`: حجم 10MB وخمس نسخ محفوظة.
+
+لعرض آخر الأخطاء عبر SSH:
+
+```bash
+tail -n 100 storage/logs/error_log
+```
 
 يضيف التطبيق رؤوس CSP و`nosniff` و`SAMEORIGIN` وسياسة Referrer وPermissions. ويضيف Apache تخزيناً مؤقتاً للأصول وضغطاً عبر `mod_deflate` عند توفره.
 

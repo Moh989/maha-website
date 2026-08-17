@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Core\Env;
+use App\Core\Logger;
 use App\Core\Request;
 use App\Core\Router;
 use App\Core\Session;
@@ -25,10 +26,7 @@ Env::load(dirname(__DIR__) . '/.env');
 
 date_default_timezone_set((string) env('APP_TIMEZONE', 'Asia/Baghdad'));
 $debug = (bool) env('APP_DEBUG', false);
-ini_set('display_errors', $debug ? '1' : '0');
-ini_set('log_errors', '1');
-ini_set('error_log', dirname(__DIR__) . '/storage/logs/php-error.log');
-error_reporting(E_ALL);
+Logger::boot(dirname(__DIR__) . '/storage/logs/error_log', $debug);
 
 Session::start();
 if (!isset($_SESSION['locale'])) {

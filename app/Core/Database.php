@@ -38,7 +38,12 @@ final class Database
                 $initCommandAttribute => "SET NAMES {$config['charset']} COLLATE utf8mb4_unicode_ci",
             ]);
         } catch (PDOException $exception) {
-            error_log('Database connection failed: ' . $exception->getMessage());
+            Logger::exception('DATABASE_CONNECTION_FAILED', $exception, [
+                'host' => $config['host'],
+                'port' => $config['port'],
+                'database' => $config['database'],
+                'charset' => $config['charset'],
+            ], 'critical');
             throw new RuntimeException('تعذر الاتصال بقاعدة البيانات. راجع إعدادات البيئة.', 0, $exception);
         }
 
