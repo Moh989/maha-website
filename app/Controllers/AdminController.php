@@ -113,7 +113,7 @@ final class AdminController
             'label' => 'رسائل التواصل', 'title' => 'subject', 'soft' => true, 'seo' => false, 'no_create' => true,
             'fields' => [
                 'name' => ['label' => 'الاسم', 'type' => 'readonly'], 'company' => ['label' => 'الشركة', 'type' => 'readonly'],
-                'email' => ['label' => 'البريد', 'type' => 'readonly'], 'phone' => ['label' => 'الهاتف', 'type' => 'readonly'],
+                'email' => ['label' => 'البريد', 'type' => 'readonly'],
                 'country' => ['label' => 'الدولة', 'type' => 'readonly'], 'request_type' => ['label' => 'نوع الطلب', 'type' => 'readonly'],
                 'service' => ['label' => 'الخدمة', 'type' => 'readonly'], 'subject' => ['label' => 'العنوان', 'type' => 'readonly'],
                 'message' => ['label' => 'الرسالة', 'type' => 'readonly-textarea'],

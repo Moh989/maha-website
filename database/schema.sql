@@ -170,7 +170,6 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     name VARCHAR(120) NOT NULL,
     company VARCHAR(160) NULL,
     email VARCHAR(190) NOT NULL,
-    phone VARCHAR(30) NULL,
     country VARCHAR(100) NOT NULL,
     request_type VARCHAR(100) NOT NULL,
     service VARCHAR(150) NOT NULL,

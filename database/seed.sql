@@ -6,10 +6,9 @@ INSERT INTO roles (slug, name_ar, name_en) VALUES
 ON DUPLICATE KEY UPDATE name_ar = VALUES(name_ar), name_en = VALUES(name_en);
 
 INSERT INTO settings (setting_key, setting_value, setting_group) VALUES
-('contact_phone', '+964 785 210 1010', 'contact'),
 ('contact_email', 'info@almaha-group.com', 'contact'),
-('contact_address_ar', 'الجادرية - بغداد، العراق', 'contact'),
-('contact_address_en', 'Al-Jadriya - Baghdad, Iraq', 'contact'),
+('contact_address_ar', 'العراق - بغداد', 'contact'),
+('contact_address_en', 'Iraq - Baghdad', 'contact'),
 ('primary_color', '#D33633', 'design'),
 ('secondary_color', '#099BCC', 'design'),
 ('dark_color', '#030606', 'design'),
@@ -116,8 +115,8 @@ INSERT INTO pages (title_ar, title_en, slug, excerpt_ar, excerpt_en, body_ar, bo
 ('سياسة الخصوصية', 'Privacy Policy', 'privacy',
 'كيفية جمع واستخدام وحماية البيانات المقدمة عبر الموقع.',
 'How information submitted through this website is collected, used and protected.',
-'يجمع الموقع البيانات التي يقدمها المستخدم طوعاً عبر نموذج التواصل، وتشمل الاسم وبيانات الجهة والبريد والهاتف والدولة ونوع الطلب والخدمة والرسالة. تستخدم هذه البيانات للرد على الطلب، وإدارة المراسلات المهنية، وحماية الموقع من الإساءة. تحفظ الرسائل ضمن قاعدة بيانات الموقع ولا تباع لأطراف ثالثة. قد تستخدم بيانات تقنية محدودة مثل عنوان الشبكة بصورة مجزأة وسجل المتصفح لأغراض الأمان وتحديد معدل الإرسال. يمكن طلب تصحيح البيانات أو حذفها عبر البريد الرسمي للشركة، مع مراعاة الالتزامات النظامية وحفظ السجلات. لا يتضمن الموقع حالياً معرفاً لخدمة تحليلات خارجية، ويمكن تفعيلها لاحقاً بعد تحديث هذه السياسة عند الحاجة.',
-'The website collects information voluntarily submitted through the contact form, including name, organization details, email, phone, country, request type, service and message. This information is used to respond to the request, manage professional correspondence and protect the website from abuse. Messages are stored in the website database and are not sold to third parties. Limited technical data, such as a hashed network address and browser information, may be used for security and rate limiting. Requests to correct or delete data may be sent to the company official email, subject to legal obligations and record-retention requirements. No external analytics identifier is currently embedded; such a service may be enabled later after this policy is updated as required.',
+'يجمع الموقع البيانات التي يقدمها المستخدم طوعاً عبر نموذج التواصل، وتشمل الاسم وبيانات الجهة والبريد والدولة ونوع الطلب والخدمة والرسالة. تستخدم هذه البيانات للرد على الطلب عبر البريد الإلكتروني الرسمي، وإدارة المراسلات المهنية، وحماية الموقع من الإساءة. تحفظ الرسائل ضمن قاعدة بيانات الموقع ولا تباع لأطراف ثالثة. قد تستخدم بيانات تقنية محدودة مثل عنوان الشبكة بصورة مجزأة وسجل المتصفح لأغراض الأمان وتحديد معدل الإرسال. يمكن طلب تصحيح البيانات أو حذفها عبر البريد الرسمي للشركة، مع مراعاة الالتزامات النظامية وحفظ السجلات. لا يتضمن الموقع حالياً معرفاً لخدمة تحليلات خارجية، ويمكن تفعيلها لاحقاً بعد تحديث هذه السياسة عند الحاجة.',
+'The website collects information voluntarily submitted through the contact form, including name, organization details, email, country, request type, service and message. This information is used to respond through the company official email, manage professional correspondence and protect the website from abuse. Messages are stored in the website database and are not sold to third parties. Limited technical data, such as a hashed network address and browser information, may be used for security and rate limiting. Requests to correct or delete data may be sent to the company official email, subject to legal obligations and record-retention requirements. No external analytics identifier is currently embedded; such a service may be enabled later after this policy is updated as required.',
 'content', NULL, 0, 'published', 150, NOW()),
 
 ('شروط الاستخدام', 'Terms of Use', 'terms',
@@ -152,8 +151,8 @@ INSERT INTO products (title_ar, title_en, slug, summary_ar, summary_en, image_pa
 ON DUPLICATE KEY UPDATE title_ar = VALUES(title_ar), title_en = VALUES(title_en), summary_ar = VALUES(summary_ar), summary_en = VALUES(summary_en), image_path = VALUES(image_path), status = VALUES(status), sort_order = VALUES(sort_order), updated_at = NOW();
 
 INSERT INTO projects (title_ar, title_en, summary_ar, summary_en, contract_date, image_path, status, sort_order) VALUES
-('عقد بيع منتوج البنزين الطبيعي', 'Natural Gasoline Sale and Purchase Agreement', 'عقد مدرج بعنوانه ضمن قسم العقود التي نفذتها الشركة في الملف التعريفي الرسمي. لم تُنشر في الملخص العام قيمة العقد أو اسم العميل أو نتائج التنفيذ، لذلك لا تعرض هذه الصفحة تلك البيانات.', 'A contract listed by title under the contracts executed section of the official profile. The public summary does not publish the contract value, client name or execution outcomes, so this page does not display them.', NULL, NULL, 'published', 10),
-('عقد تشغيل مشترك لمشروع معمل إنتاج وقود البواخر والأسفلت المؤكسد', 'Joint Operation Agreement for the Marine Fuel and Oxidized Asphalt Production Plant Project', 'عقد تشغيل مشترك مدرج بعنوانه في الملف التعريفي الرسمي. تُحجب التفاصيل غير الواردة في الملخص المؤسسي العام عن العرض على الموقع.', 'A joint operation agreement listed by title in the official profile. Details not stated in the general corporate summary are not displayed on the website.', NULL, NULL, 'published', 20)
+('عقد بيع منتوج البنزين الطبيعي', 'Natural Gasoline Sale and Purchase Agreement', 'عقد نفذته الشركة لبيع منتوج البنزين الطبيعي، ضمن نشاطها في تسويق المنتجات النفطية وتجهيزها.', 'A contract executed by the company for the sale of natural gasoline, as part of its petroleum products marketing and supply activities.', NULL, NULL, 'published', 10),
+('عقد تشغيل مشترك لمشروع معمل إنتاج وقود البواخر والأسفلت المؤكسد', 'Joint Operation Agreement for the Marine Fuel and Oxidized Asphalt Production Plant Project', 'عقد تشغيل مشترك لمشروع معمل يُنتج وقود البواخر والأسفلت المؤكسد، ضمن نشاط الشركة في الإنتاج النفطي والصناعي.', 'A joint operation agreement for a plant project producing marine fuel and oxidized asphalt, as part of the company''s petroleum and industrial production activities.', NULL, NULL, 'published', 20)
 ON DUPLICATE KEY UPDATE title_ar = VALUES(title_ar), summary_ar = VALUES(summary_ar), summary_en = VALUES(summary_en), status = VALUES(status), sort_order = VALUES(sort_order), updated_at = NOW();
 
 INSERT INTO slider_items (title_ar, title_en, subtitle_ar, subtitle_en, image_path, cta_url, status, sort_order) VALUES

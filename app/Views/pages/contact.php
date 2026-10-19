@@ -1,10 +1,18 @@
-<?php $isAr = locale() === 'ar'; $old = $old ?? []; $errors = $errors ?? []; ?>
+<?php
+$isAr = locale() === 'ar';
+$old = $old ?? [];
+$errors = $errors ?? [];
+$officialEmail = $settings['contact_email'] ?? 'info@almaha-group.com';
+$officeAddress = $isAr
+    ? ($settings['contact_address_ar'] ?? 'العراق - بغداد')
+    : ($settings['contact_address_en'] ?? 'Iraq - Baghdad');
+?>
 <section class="inner-hero contact-hero"><div class="inner-hero-grid" aria-hidden="true"></div><div class="inner-hero-content"><p class="eyebrow"><span></span>CONTACT / REQUEST</p><h1><?= e(localized_field($page, 'title')) ?></h1><p><?= e(localized_field($page, 'excerpt')) ?></p></div></section>
 <section class="contact-section section">
     <div class="contact-info reveal">
         <p class="eyebrow dark"><span></span><?= $isAr ? 'معلومات الشركة' : 'Company Details' ?></p>
         <h2><?= $isAr ? 'ابدأ محادثة مهنية مباشرة.' : 'Start a direct professional conversation.' ?></h2>
-        <div class="contact-lines"><a href="tel:+9647852101010"><span><?= $isAr ? 'الهاتف' : 'Phone' ?></span><strong dir="ltr">+964 785 210 1010</strong></a><a href="mailto:info@almaha-group.com"><span><?= $isAr ? 'البريد الإلكتروني' : 'Email' ?></span><strong dir="ltr">info@almaha-group.com</strong></a><div><span><?= $isAr ? 'المقر' : 'Headquarters' ?></span><strong><?= $isAr ? 'الجادرية - بغداد، العراق' : 'Al-Jadriya - Baghdad, Iraq' ?></strong></div></div>
+        <div class="contact-lines"><a href="mailto:<?= e($officialEmail) ?>"><span><?= $isAr ? 'البريد الإلكتروني الرسمي' : 'Official Email' ?></span><strong dir="ltr"><?= e($officialEmail) ?></strong></a><div><span><?= $isAr ? 'المقر' : 'Headquarters' ?></span><strong><?= e($officeAddress) ?></strong></div></div>
         <p class="data-note"><?= $isAr ? 'تُستخدم بيانات هذا النموذج للرد على الطلب فقط وفق سياسة الخصوصية.' : 'Form data is used only to respond to the request, as described in the privacy policy.' ?></p>
     </div>
     <form class="contact-form reveal" method="post" action="<?= e(locale() === 'en' ? url('/en/contact') : url('/contact')) ?>" novalidate data-validate>
@@ -18,7 +26,6 @@
                 'name' => [$isAr ? 'الاسم الكامل' : 'Full name', 'text', true],
                 'company' => [$isAr ? 'الشركة أو الجهة' : 'Company or entity', 'text', false],
                 'email' => [$isAr ? 'البريد الإلكتروني' : 'Email address', 'email', true],
-                'phone' => [$isAr ? 'رقم الهاتف' : 'Phone number', 'tel', false],
                 'country' => [$isAr ? 'الدولة' : 'Country', 'text', true],
                 'subject' => [$isAr ? 'عنوان الرسالة' : 'Subject', 'text', true],
             ]; foreach ($fields as $name => [$label, $type, $required]): ?>

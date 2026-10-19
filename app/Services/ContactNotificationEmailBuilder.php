@@ -17,7 +17,6 @@ final class ContactNotificationEmailBuilder
             'الاسم' => self::clean((string) ($message['name'] ?? ''), 160),
             'الشركة أو الجهة' => self::clean((string) ($message['company'] ?? ''), 160),
             'البريد الإلكتروني' => self::clean((string) ($message['email'] ?? ''), 190),
-            'رقم الهاتف' => self::clean((string) ($message['phone'] ?? ''), 80),
             'الدولة' => self::clean((string) ($message['country'] ?? ''), 100),
             'نوع الطلب' => self::clean((string) ($message['request_type'] ?? ''), 100),
             'الخدمة المطلوبة' => self::clean((string) ($message['service'] ?? ''), 160),
@@ -61,7 +60,7 @@ final class ContactNotificationEmailBuilder
         $escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $rows = '';
         foreach ($fields as $label => $value) {
-            $direction = in_array($label, ['البريد الإلكتروني', 'رقم الهاتف', 'رقم المرجع', 'وقت الاستلام'], true) ? 'ltr' : 'rtl';
+            $direction = in_array($label, ['البريد الإلكتروني', 'رقم المرجع', 'وقت الاستلام'], true) ? 'ltr' : 'rtl';
             $rows .= '<tr><td style="padding:11px 0;border-bottom:1px solid #e5eaed;color:#66747e;font-size:12px;font-weight:700;vertical-align:top;width:34%;">'
                 . $escape($label)
                 . '</td><td dir="' . $direction . '" style="padding:11px 0;border-bottom:1px solid #e5eaed;color:#101a22;font-size:13px;font-weight:700;vertical-align:top;text-align:right;overflow-wrap:anywhere;">'

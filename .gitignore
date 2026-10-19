@@ -5,6 +5,7 @@
 !/storage/uploads/.gitkeep
 /storage/cache/*
 !/storage/cache/.gitkeep
+/storage/local-mysql/
 /tmp/
 /production/
 /public/assets/docs/almaha-company-profile-2026.pdf

@@ -18,9 +18,6 @@ final class Validator
         if (!empty($data['email']) && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = __('invalid_email');
         }
-        if (!empty($data['phone']) && !preg_match('/^[0-9+()\-\s]{6,24}$/', (string) $data['phone'])) {
-            $errors['phone'] = __('invalid_phone');
-        }
         $requestTypes = locale() === 'ar'
             ? ['طلب عرض', 'فرصة تعاون', 'استفسار فني', 'استفسار عام']
             : ['Request for quotation', 'Cooperation opportunity', 'Technical inquiry', 'General inquiry'];

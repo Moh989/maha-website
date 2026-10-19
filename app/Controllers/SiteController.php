@@ -117,11 +117,11 @@ final class SiteController
 
         try {
             $statement = Database::connection()->prepare(
-                'INSERT INTO contact_messages (name, company, email, phone, country, request_type, service, subject, message, privacy_consent, locale, ip_hash, user_agent, status, created_at, updated_at) VALUES (:name, :company, :email, :phone, :country, :request_type, :service, :subject, :message, 1, :locale, :ip_hash, :user_agent, \'new\', NOW(), NOW())'
+                'INSERT INTO contact_messages (name, company, email, country, request_type, service, subject, message, privacy_consent, locale, ip_hash, user_agent, status, created_at, updated_at) VALUES (:name, :company, :email, :country, :request_type, :service, :subject, :message, 1, :locale, :ip_hash, :user_agent, \'new\', NOW(), NOW())'
             );
             $statement->execute([
-                'name' => $data['name'], 'company' => $data['company'] ?: null, 'email' => strtolower($data['email']),
-                'phone' => $data['phone'] ?: null, 'country' => $data['country'], 'request_type' => $data['request_type'],
+                'name' => $data['name'], 'company' => ($data['company'] ?? '') !== '' ? $data['company'] : null, 'email' => strtolower($data['email']),
+                'country' => $data['country'], 'request_type' => $data['request_type'],
                 'service' => $data['service'], 'subject' => $data['subject'], 'message' => $data['message'], 'locale' => locale(),
                 'ip_hash' => hash('sha256', $request->ip() . '|' . (string) env('APP_KEY', 'local')),
                 'user_agent' => $request->userAgent(),

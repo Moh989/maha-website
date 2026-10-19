@@ -170,6 +170,22 @@ $csrfFeedback = $client->request('GET', '/contact');
 check(str_contains($csrfFeedback['body'], 'انتهت صلاحية الجلسة'), 'contact reports CSRF failure', $failures);
 
 $contact = $client->request('GET', '/contact');
+check(
+    str_contains($contact['body'], 'info@almaha-group.com')
+    && str_contains($contact['body'], 'العراق - بغداد')
+    && !preg_match('/tel:|phone number|رقم الهاتف|>الهاتف<|\+964\s*785/i', $contact['body']),
+    'Arabic contact page uses official email and Baghdad address without phone details',
+    $failures
+);
+$englishContact = $client->request('GET', '/en/contact');
+check(
+    str_contains($englishContact['body'], 'lang="en" dir="ltr"')
+    && str_contains($englishContact['body'], 'info@almaha-group.com')
+    && str_contains($englishContact['body'], 'Iraq - Baghdad')
+    && !preg_match('/tel:|phone number|رقم الهاتف|>الهاتف<|\+964\s*785/i', $englishContact['body']),
+    'English contact page uses official email and Baghdad address without phone details',
+    $failures
+);
 $invalid = $client->request('POST', '/contact', [
     '_token' => csrf($contact['body']), 'name' => 'QA', 'email' => 'not-an-email',
 ]);
@@ -183,7 +199,6 @@ $valid = $client->request('POST', '/contact', [
     'name' => 'QA Contact ' . $qaSuffix,
     'company' => 'QA Company',
     'email' => "qa-{$qaSuffix}@example.test",
-    'phone' => '+9647000000000',
     'country' => 'العراق',
     'request_type' => 'استفسار عام',
     'service' => 'الخدمات النفطية',

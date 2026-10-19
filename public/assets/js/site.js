@@ -43,6 +43,7 @@
     openButton?.addEventListener('click', () => setMenu(true));
     closeButton?.addEventListener('click', () => setMenu(false));
     menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+    menu?.querySelectorAll('nav a').forEach((link, linkIndex) => link.style.setProperty('--i', String(linkIndex)));
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && menu?.classList.contains('open')) setMenu(false);
     });
@@ -91,8 +92,11 @@
             if (slides.length < 2 || reducedMotion || paused || document.hidden) return;
             clearInterval(timer);
             timer = window.setInterval(() => show(index + 1), 6500);
+            slider.classList.remove('is-playing');
+            void slider.offsetWidth;
+            slider.classList.add('is-playing');
         };
-        const stop = () => { clearInterval(timer); timer = null; };
+        const stop = () => { clearInterval(timer); timer = null; slider.classList.remove('is-playing'); };
         const restart = () => { stop(); start(); };
 
         prev?.addEventListener('click', () => show(index - 1, true));
@@ -118,6 +122,22 @@
         show(0);
         start();
     });
+
+    document.querySelectorAll('.reveal').forEach((element) => {
+        const siblings = [...(element.parentElement?.children || [])].filter((child) => child.classList.contains('reveal'));
+        const position = siblings.indexOf(element);
+        if (position > 0) element.style.setProperty('--reveal-delay', `${Math.min(position, 5) * 90}ms`);
+    });
+
+    if (!reducedMotion && window.matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll('.capability-card, .business-row, .service-index-row, .project-preview-card, .framework-step').forEach((card) => {
+            card.addEventListener('pointermove', (event) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+                card.style.setProperty('--my', `${event.clientY - rect.top}px`);
+            });
+        });
+    }
 
     if ('IntersectionObserver' in window && !reducedMotion) {
         const observer = new IntersectionObserver((entries) => {

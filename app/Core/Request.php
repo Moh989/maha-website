@@ -15,7 +15,10 @@ final class Request
     {
         $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
         $configuredBase = rtrim((string) parse_url((string) config('app.url'), PHP_URL_PATH), '/');
-        $scriptBase = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
+        $scriptName = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
+        $scriptBase = str_ends_with(strtolower($scriptName), '.php')
+            ? rtrim(str_replace('\\', '/', dirname($scriptName)), '/')
+            : '';
 
         foreach ([$configuredBase, $scriptBase] as $base) {
             if (
